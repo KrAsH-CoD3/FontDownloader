@@ -45,7 +45,7 @@ def main():
         print(f"Downloading {fam} — variant: {variant}")
         resp = requests.get(url)
         resp.raise_for_status()
-        with open(path, "wb") as outf:
+        with open(downloaded_fonts_path, "wb") as outf:
             outf.write(resp.content)
         downloaded.append(f"{fam} ({variant})")
 
