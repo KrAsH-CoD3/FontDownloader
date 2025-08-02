@@ -6,8 +6,7 @@ dist/
 wheels/
 *.egg-info
 
-# Virtual environments
 .venv
 .env
-downloaded_fonts
-fonts
+.vscode
+Fonts/Downloaded_fonts/Common
