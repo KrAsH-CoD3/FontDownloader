@@ -86,5 +86,4 @@ Noto Sans Yi
 Noto Serif CJK JP  
 Noto Serif CJK KR  
 Noto Serif CJK SC  
-Noto Serif CJK TC  
-Noto Sans CJK SC
+Noto Serif CJK TC

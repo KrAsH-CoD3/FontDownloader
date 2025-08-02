@@ -9,4 +9,4 @@ wheels/
 .venv
 .env
 .vscode
-Fonts/Downloaded_fonts/Common
+Fonts/Downloaded_fonts

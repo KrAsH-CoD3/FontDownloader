@@ -176,7 +176,9 @@ async def main():
         config=config,
     ) as browser:
         page = await browser.new_page()
-        await page.goto("https://google.com")
+        await page.goto("https://abrahamjuliot.github.io/creepjs/tests/fonts.html")
+        await page.wait_for_timeout(5000)
+        input("Press Enter to exit...")
 
 
 if __name__ == "__main__":

@@ -9,13 +9,25 @@ API_KEY = os.getenv("GOOGLE_FONTS_API_KEY") or os.getenv("API_KEY")
 if not API_KEY:
     raise RuntimeError("Missing GOOGLE_FONTS_API_KEY or API_KEY in .env")
 
-BROWSER = "Chrome"
-DOWNLOADED_FONTS_DIR = Path("Fonts/Downloaded_fonts")
-FULL_FONT_LIST_FILE = Path("Fonts/Camoufox/Fonts_names.txt")   # All available fonts
-WANTED_FONT_LIST_FILE = Path(f"Fonts/Common/{BROWSER}.txt")    # Fonts to download
-NOT_FOUND_FILE = DOWNLOADED_FONTS_DIR / BROWSER / "AAA_NOT_FOUND_FONTS.txt"
+BROWSER = "Firefox"
+DEVICE1 = "PocoX3Pro"
+DEVICE2 = "RedmiNote10Pro"
 
-os.makedirs(DOWNLOADED_FONTS_DIR / BROWSER, exist_ok=True)
+# Directory setup
+BASE_DIR = Path("Fonts")
+CAMOUFOX_FONTS = BASE_DIR / "Camoufox" / "Fonts_names.txt"  # All available fonts
+COMMON_FONTS_DIR = BASE_DIR / "Common"
+UNCOMMON_FONTS_DIR = BASE_DIR / "Uncommon"
+BASE_DOWNLOADED_FONTS_DIR = BASE_DIR / "Downloaded_fonts"
+DOWNLOADED_FONTS_DIR = BASE_DOWNLOADED_FONTS_DIR / f"{DEVICE1}_{DEVICE2}" / BROWSER
+
+WANTED_FONT_LIST_FILE = COMMON_FONTS_DIR / f"{DEVICE1}_{DEVICE2}" / f"{BROWSER}Fonts.txt"
+NOT_FOUND_FILE = DOWNLOADED_FONTS_DIR / "AAA_NOT_FOUND_FONTS.txt"
+
+# Ensure directories exist
+os.makedirs(DOWNLOADED_FONTS_DIR, exist_ok=True)
+os.makedirs(COMMON_FONTS_DIR, exist_ok=True)
+os.makedirs(UNCOMMON_FONTS_DIR, exist_ok=True)
 
 def normalize_font_name(name: str) -> str:
     name = re.sub(r'[-_](Regular|Bold|Italic|Light|Medium|SemiBold|ExtraBold|Black|Thin|ExtraLight)$', '', name, flags=re.IGNORECASE)
@@ -40,7 +52,14 @@ def download_font_file(url: str, save_path: Path):
         f.write(resp.content)
 
 def main():
-    full_font_set = load_font_names(FULL_FONT_LIST_FILE)
+    # Load available fonts from Camoufox
+    full_font_set = load_font_names(CAMOUFOX_FONTS)
+    
+    # Load wanted fonts for the specified browser
+    if not WANTED_FONT_LIST_FILE.exists():
+        print(f"❌ Font list not found: {WANTED_FONT_LIST_FILE}")
+        return
+        
     wanted_font_set = load_font_names(WANTED_FONT_LIST_FILE)
     fonts_to_download = wanted_font_set - full_font_set
 

@@ -16,21 +16,29 @@ This project helps you:
 ```
 FontDownloader/
 ├── main.py                    # Main font downloader script
-├── font_diff_camoufox.py     # Font comparison utility
-├── getFontNames.py           # Extract fonts from Camoufox cache
-├── mobile.py                 # Mobile device simulation config
-├── pyproject.toml            # Project dependencies
-├── .env                      # API keys (create this file)
+├── font_diff_camoufox.py      # Font comparison utility
+├── getFontNames.py            # Extract fonts from Camoufox cache
+├── mobile.py                  # Mobile device simulation config
+├── pyproject.toml             # Project dependencies
+├── .env                       # API keys (create this file)
 └── Fonts/
     ├── Camoufox/
-    │   └── Fonts_names.txt   # Master list of all available fonts
-    ├── Common/
-    │   ├── Chrome.txt        # Common Chrome fonts
-    │   └── Firefox.txt       # Common Firefox fonts
-    ├── Uncommon/
-    │   ├── Chrome/           # Device-specific Chrome fonts
-    │   └── Firefox/          # Device-specific Firefox fonts
-    └── Downloaded_fonts/     # Downloaded font files (organized by browser)
+    │   └── Fonts_names.txt    # Master list of all available fonts
+    ├── Common/                # Common fonts by device model
+    │   └── PocoX3Pro_RedmiNote10Pro/
+    │       ├── ChromeFonts.txt  # Common Chrome fonts
+    │       └── FirefoxFonts.txt # Common Firefox fonts
+    ├── Uncommon/              # Uncommon fonts by device variant
+    │   └── PocoX3Pro_RedmiNote10Pro/
+    │       ├── PocoX3Pro/     # Poco X3 Pro specific fonts
+    │       │   ├── Chrome.txt
+    │       │   └── Firefox.txt
+    │       └── RedmiNote10Pro/ # Redmi Note 10 Pro specific fonts
+    │           ├── Chrome.txt
+    │           └── Firefox.txt
+    └── Downloaded_fonts/      # Downloaded font files
+        └── PocoX3Pro_RedmiNote10ProChrome/  # Downloaded Chrome fonts
+        └── PocoX3Pro_RedmiNote10ProFirefox/ # Downloaded Firefox fonts
 ```
 
 ## 🚀 Quick Start
@@ -180,20 +188,24 @@ See `pyproject.toml` for dependencies.
 
 ## 📊 Font Organization
 
-### Common Fonts
-Fonts that are widely available across browsers:
-- `Fonts/Common/Chrome.txt` - Common Chrome fonts both mobile devices
-- `Fonts/Common/Firefox.txt` - Common Firefox fonts both mobile devices
+### Font Organization
 
-### Uncommon Fonts
-Device-specific fonts organized by browser and device:
-- `Fonts/Uncommon/Chrome/PocoX3Pro.txt` - Fonts not found in Chrome on PocoX3Pro
-- `Fonts/Uncommon/Firefox/PocoX3Pro.txt` - Fonts not found in Firefox on PocoX3Pro
+#### Common Fonts
+Fonts that are common across device variants:
+- `Fonts/Common/PocoX3Pro_RedmiNote10Pro/ChromeFonts.txt` - Common Chrome fonts
+- `Fonts/Common/PocoX3Pro_RedmiNote10Pro/FirefoxFonts.txt` - Common Firefox fonts
 
-### Downloaded Fonts
+#### Uncommon Fonts
+Device-variant specific fonts that are not in the common set:
+- `Fonts/Uncommon/PocoX3Pro_RedmiNote10Pro/PocoX3Pro/Chrome.txt` - Chrome fonts specific to Poco X3 Pro
+- `Fonts/Uncommon/PocoX3Pro_RedmiNote10Pro/PocoX3Pro/Firefox.txt` - Firefox fonts specific to Poco X3 Pro
+- `Fonts/Uncommon/PocoX3Pro_RedmiNote10Pro/RedmiNote10Pro/Chrome.txt` - Chrome fonts specific to Redmi Note 10 Pro
+- `Fonts/Uncommon/PocoX3Pro_RedmiNote10Pro/RedmiNote10Pro/Firefox.txt` - Firefox fonts specific to Redmi Note 10 Pro
+
+#### Downloaded Fonts
 Actual font files downloaded from Google Fonts:
-- `Fonts/Downloaded_fonts/Chrome/` - Downloaded fonts for Chrome
-- `Fonts/Downloaded_fonts/Firefox/` - Downloaded fonts for Firefox
+- `Fonts/Downloaded_fonts/PocoX3Pro_RedmiNote10ProChrome/` - Downloaded Chrome fonts
+- `Fonts/Downloaded_fonts/PocoX3Pro_RedmiNote10ProFirefox/` - Downloaded Firefox fonts
 
 ## 🚨 Troubleshooting
 

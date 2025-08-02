@@ -1,13 +1,18 @@
 from pathlib import Path
 import re
 
+
 BROWSER = "Firefox"
-DEVICE = "PocoX3Pro"
+DEVICE1 = "PocoX3Pro"
+DEVICE2 = "RedmiNote10Pro"
 BASE_DIR = Path("Fonts")
-CAMOUFOX_FONTS = BASE_DIR / "Camoufox" / "Fonts_names.txt"
-DEVICE_BROWSER_FONTS = BASE_DIR / "Common" / f"{BROWSER}.txt"
-COMMON_OUTPUT = BASE_DIR / "Camoufox" / "Common" / f"{DEVICE}_{BROWSER}.txt"
-UNCOMMON_OUTPUT = BASE_DIR / "Camoufox" / "Uncommon" / f"{DEVICE}_{BROWSER}.txt"
+CAMOUFOX_FONTS = BASE_DIR / "Camoufox" / "Fonts_names.txt"  # All available fonts
+COMMON_DIR = BASE_DIR / "Common"
+UNCOMMON_DIR = BASE_DIR / "Uncommon"
+
+# Ensure output directories exist
+COMMON_DIR.mkdir(parents=True, exist_ok=True)
+UNCOMMON_DIR.mkdir(parents=True, exist_ok=True)
 
 def normalize_font_name(name: str) -> str:
     name = re.sub(r'[-_](Regular|Bold|Italic|Light|Medium|SemiBold|ExtraBold|Black|Thin|ExtraLight)$', '', name, flags=re.IGNORECASE)
@@ -15,26 +20,41 @@ def normalize_font_name(name: str) -> str:
     name = re.sub(r'(?<=[A-Z])(?=[A-Z][a-z])', ' ', name)
     return name.strip().title()
 
-# Ensure the output directories exist
-COMMON_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-UNCOMMON_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+def load_fonts_from_file(filepath):
+    """Load font names from a file and return a set of normalized names."""
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return set(normalize_font_name(line.strip()) for line in f if line.strip())
+    except FileNotFoundError:
+        print(f"Warning: Font file not found: {filepath}")
+        return set()
 
-with open(CAMOUFOX_FONTS, 'r', encoding='utf-8') as f:
-    camoufox_set = set(normalize_font_name(line.strip()) for line in f if line.strip())
+def save_fonts_to_file(fonts, filepath):
+    """Save a set of font names to a file."""
+    with open(filepath, 'w', encoding='utf-8') as f:
+        for font in sorted(fonts):
+            f.write(f"{font}\n")
 
-with open(DEVICE_BROWSER_FONTS, 'r', encoding='utf-8') as f:
-    device_browser_set = set(normalize_font_name(line.strip()) for line in f if line.strip())
+# Load font sets
+camoufox_set = load_fonts_from_file(CAMOUFOX_FONTS)
+
+# Input file paths
+browser_fonts_file = COMMON_DIR / f"{DEVICE1}_{DEVICE2}" / f"{BROWSER}Fonts.txt"
+
+# Output file paths 
+common_output = COMMON_DIR / f"{DEVICE1}_{DEVICE2}" / f"{BROWSER}Fonts.txt"
+uncommon_output = UNCOMMON_DIR / f"{DEVICE1}_{DEVICE2}" / f"{BROWSER}Fonts.txt"
+
+browser_fonts = load_fonts_from_file(browser_fonts_file)
 
 # Compute intersections and differences
-common_fonts = camoufox_set & device_browser_set
-uncommon_fonts = device_browser_set - camoufox_set
+common_fonts = camoufox_set & browser_fonts
+uncommon_fonts = browser_fonts - camoufox_set
 
-# Write common fonts
-with open(COMMON_OUTPUT, 'w', encoding='utf-8') as f:
-    for font in sorted(common_fonts):
-        f.write(font + '\n')
+# Save results
+save_fonts_to_file(common_fonts, common_output)
+save_fonts_to_file(uncommon_fonts, uncommon_output)
 
-# Write uncommon fonts
-with open(UNCOMMON_OUTPUT, 'w', encoding='utf-8') as f:
-    for font in sorted(uncommon_fonts):
-        f.write(font + '\n')
+print(f"Processed {BROWSER}:")
+print(f"  - Common fonts: {len(common_fonts)}")
+print(f"  - Uncommon fonts: {len(uncommon_fonts)}")
