@@ -32,7 +32,6 @@ def load_font_list(filepath: Path) -> List[str]:
     with open(filepath, 'r', encoding='utf-8') as file:
         return [line.strip() for line in file if line.strip()]
 
-
 def compare_fonts(list_a: List[str], list_b: List[str]) -> Tuple[Set[str], Set[str], Set[str]]:
     """Compares two lists of font names and returns common fonts, only in list A, and only in list B."""
     set_a = set(list_a)
@@ -43,7 +42,6 @@ def compare_fonts(list_a: List[str], list_b: List[str]) -> Tuple[Set[str], Set[s
     only_in_b = set_b - set_a
 
     return common, only_in_a, only_in_b
-
 
 def save_fonts_to_file(fonts: Set[str], filepath: Path) -> None:
     """Save a set of fonts to a file, one per line."""

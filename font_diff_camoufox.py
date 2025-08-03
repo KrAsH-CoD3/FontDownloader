@@ -2,15 +2,29 @@ from pathlib import Path
 import re
 
 
-BROWSER = "Firefox"
-DEVICE1 = "PocoX3Pro"
-DEVICE2 = "RedmiNote10Pro"
+BROWSER = "Firefox"   # <=== The browser to compare to Camoufox
+DEVICE1 = "PocoX3Pro" # <=== The device to compare to Camoufox
+
+DEVICE2 = "RedmiNote10Pro"  # <=== The second device which common fonts was gotten from
+DEVICE_PAIR = f"{DEVICE1}_{DEVICE2}"
+
 BASE_DIR = Path("Fonts")
-CAMOUFOX_FONTS = BASE_DIR / "Camoufox" / "Fonts_names.txt"  # All available fonts
-COMMON_DIR = BASE_DIR / "Common"
-UNCOMMON_DIR = BASE_DIR / "Uncommon"
+COMPARED_DIR = BASE_DIR / "Compared"
+CAMOUFOX_FONTS_DIR = COMPARED_DIR / "Camoufox"
+CAMOUFOX_FONTS = BASE_DIR / "CamoufoxFonts.txt"
+
+COMMON_DIR = CAMOUFOX_FONTS_DIR / "Common"
+UNCOMMON_DIR = CAMOUFOX_FONTS_DIR / "Uncommon"
+
+# Input file paths
+browser_fonts_file = COMPARED_DIR / "Common" / DEVICE_PAIR / f"{BROWSER}Fonts.txt"
+
+# Output file paths
+common_output = COMMON_DIR / f"{DEVICE1}{BROWSER}Fonts.txt"
+uncommon_output = UNCOMMON_DIR / f"{DEVICE1}{BROWSER}Fonts.txt"
 
 # Ensure output directories exist
+CAMOUFOX_FONTS_DIR.mkdir(parents=True, exist_ok=True)
 COMMON_DIR.mkdir(parents=True, exist_ok=True)
 UNCOMMON_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -37,14 +51,6 @@ def save_fonts_to_file(fonts, filepath):
 
 # Load font sets
 camoufox_set = load_fonts_from_file(CAMOUFOX_FONTS)
-
-# Input file paths
-browser_fonts_file = COMMON_DIR / f"{DEVICE1}_{DEVICE2}" / f"{BROWSER}Fonts.txt"
-
-# Output file paths 
-common_output = COMMON_DIR / f"{DEVICE1}_{DEVICE2}" / f"{BROWSER}Fonts.txt"
-uncommon_output = UNCOMMON_DIR / f"{DEVICE1}_{DEVICE2}" / f"{BROWSER}Fonts.txt"
-
 browser_fonts = load_fonts_from_file(browser_fonts_file)
 
 # Compute intersections and differences
@@ -55,6 +61,6 @@ uncommon_fonts = browser_fonts - camoufox_set
 save_fonts_to_file(common_fonts, common_output)
 save_fonts_to_file(uncommon_fonts, uncommon_output)
 
-print(f"Processed {BROWSER}:")
+print(f"Comparison of {DEVICE1} {BROWSER} Fonts with Camoufox Fonts:")
 print(f"  - Common fonts: {len(common_fonts)}")
 print(f"  - Uncommon fonts: {len(uncommon_fonts)}")
