@@ -1,3 +1,19 @@
+Arial  
+Courier  
+Courier New  
+Georgia  
+Helvetica  
+Monaco  
+Palatino  
+Tahoma  
+Times  
+Times New Roman  
+Verdana  
+Baskerville  
+Carrois Gothic SC  
+Coming Soon  
+Cutive Mono  
+Dancing Script  
 Noto Serif  
 Roboto  
 Droid Sans Mono  
@@ -10,6 +26,11 @@ Noto Sans Batak
 Noto Sans Brahmi  
 Noto Sans Buginese  
 Noto Sans Buhid  
+Noto Sans CJK HK  
+Noto Sans CJK JP  
+Noto Sans CJK KR  
+Noto Sans CJK SC  
+Noto Sans CJK TC  
 Noto Sans Carian  
 Noto Sans Cham  
 Noto Sans Coptic  
@@ -38,6 +59,11 @@ Noto Sans Lydian
 Noto Sans Mandaic  
 Noto Sans Meetei Mayek  
 Noto Sans Mongolian  
+Noto Sans Mono CJK HK  
+Noto Sans Mono CJK JP  
+Noto Sans Mono CJK KR  
+Noto Sans Mono CJK SC  
+Noto Sans Mono CJK TC  
 Noto Sans NKo  
 Noto Sans New Tai Lue  
 Noto Sans Ogham  

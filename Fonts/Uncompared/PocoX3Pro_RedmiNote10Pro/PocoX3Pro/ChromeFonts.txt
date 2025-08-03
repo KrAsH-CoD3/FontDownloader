@@ -10,8 +10,17 @@ Times
 Times New Roman  
 Verdana  
 Baskerville  
+Comic Sans MS  
+Aclonica  
+Arvo  
+Cherry Swash  
 Noto Serif  
+Original Surfer  
+PT Mono  
+PT Sans  
+Permanent Marker  
 Roboto  
+Vibur  
 Droid Sans Mono  
 Noto Color Emoji  
 Noto Naskh Arabic  
@@ -22,6 +31,7 @@ Noto Sans Batak
 Noto Sans Brahmi  
 Noto Sans Buginese  
 Noto Sans Buhid  
+Noto Sans CJK SC Regular  
 Noto Sans Carian  
 Noto Sans Cham  
 Noto Sans Coptic  
