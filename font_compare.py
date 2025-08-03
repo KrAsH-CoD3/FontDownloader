@@ -22,9 +22,9 @@ COMMON_OUTPUT_DIR = COMPARED_DIR / "Common" / DEVICE_PAIR
 UNCOMMON_OUTPUT_DIR = COMPARED_DIR / "Uncommon" / DEVICE_PAIR
 
 # Create output directories if they don't exist
-os.makedirs(COMMON_OUTPUT_DIR, exist_ok=True)
-os.makedirs(UNCOMMON_OUTPUT_DIR / DEVICE1, exist_ok=True)
-os.makedirs(UNCOMMON_OUTPUT_DIR / DEVICE2, exist_ok=True)
+os.makedirs(COMMON_OUTPUT_DIR, parents=True, exist_ok=True)
+os.makedirs(UNCOMMON_OUTPUT_DIR / DEVICE1, parents=True, exist_ok=True)
+os.makedirs(UNCOMMON_OUTPUT_DIR / DEVICE2, parents=True, exist_ok=True)
 
 
 def load_font_list(filepath: Path) -> List[str]:
