@@ -1,58 +1,64 @@
-# FontDownloader 🔤
+# FontDownloader
 
-A Python toolkit for managing, comparing, and downloading fonts from Google Fonts API. Designed to work seamlessly with Camoufox browser automation and font fingerprinting projects.
+A powerful Python toolkit for managing, comparing, and downloading fonts from Google Fonts API, with special integration for Camoufox browser automation. This tool helps you maintain consistent font availability across different devices and browsers by identifying and downloading missing fonts.
 
-## 🎯 Purpose
+## Purpose
 
-This project helps you:
-- **Download missing fonts** from Google Fonts based on browser/device requirements
-- **Compare font lists** between different browsers and devices
-- **Extract font names** from Camoufox cache
-- **Organize fonts** by browser and device compatibility
-- **Simulate mobile devices** with accurate font fingerprinting
+FontDownloader is designed to solve the challenge of font consistency across different devices and browsers. It allows you to:
 
-## 📁 Project Structure
+- **Compare font availability** between device pairs (e.g., PocoX3Pro vs RedmiNote10Pro)
+- **Download missing fonts** from Google Fonts for specific browser/device combinations
+- **Extract and organize font names** from Camoufox cache
+- **Identify common and uncommon fonts** across different device configurations
+- **Maintain a consistent font library** for web development and testing
+
+## Features
+
+- **Font Comparison**: Compare font availability between different devices and browsers
+- **Automated Downloads**: Automatically download missing fonts from Google Fonts API
+- **Font Normalization**: Intelligent font name normalization for accurate comparisons
+- **Device Pair Analysis**: Analyze font differences between device pairs
+- **Browser-Specific Font Management**: Handle fonts differently based on browser (Chrome, Firefox, etc.)
+- **Font Organization**: Automatically organize downloaded fonts by browser and device
+
+## Project Structure
 
 ```
 FontDownloader/
 ├── main.py                    # Main font downloader script
-├── font_diff_camoufox.py      # Font comparison utility
-├── getFontNames.py            # Extract fonts from Camoufox cache
-├── mobile.py                  # Mobile device simulation config
-├── pyproject.toml             # Project dependencies
-├── .env                       # API keys (create this file)
+├── font_diff_camoufox.py      # Compare device/browser font lists with Camoufox
+├── getFontNames.py            # Extract font names from Camoufox cache
+├── mobile.py                  # Mobile device simulation configuration
+├── font_compare.py            # Additional font comparison utilities
+├── pyproject.toml             # Project dependencies and configuration
+├── uv.lock                    # Dependency lock file
 └── Fonts/
-    ├── Camoufox/
-    │   └── Fonts_names.txt    # Master list of all available fonts
-    ├── Common/                # Common fonts by device model
-    │   └── PocoX3Pro_RedmiNote10Pro/
-    │       ├── ChromeFonts.txt  # Common Chrome fonts
-    │       └── FirefoxFonts.txt # Common Firefox fonts
-    ├── Uncommon/              # Uncommon fonts by device variant
-    │   └── PocoX3Pro_RedmiNote10Pro/
-    │       ├── PocoX3Pro/     # Poco X3 Pro specific fonts
-    │       │   ├── Chrome.txt
-    │       │   └── Firefox.txt
-    │       └── RedmiNote10Pro/ # Redmi Note 10 Pro specific fonts
-    │           ├── Chrome.txt
-    │           └── Firefox.txt
+    ├── CamoufoxFonts.txt      # Master list of all available fonts in Camoufox
+    ├── Compared/              # Font comparison results
+    │   ├── Camoufox/          # Master list of all available fonts in Camoufox
+    │   │  ├── Common/         # Common fonts between Camoufox and device 
+    │   │  └── Uncommon/       # Fonts not in Camoufox
+    │   ├── Common/            # Common fonts between device pairs
+    │   └── Uncommon/          # Fonts specific to device pairs
+    │
+    ├── Uncompared/            # Raw font lists before comparison
+    │
     └── Downloaded_fonts/      # Downloaded font files
-        └── PocoX3Pro_RedmiNote10ProChrome/  # Downloaded Chrome fonts
-        └── PocoX3Pro_RedmiNote10ProFirefox/ # Downloaded Firefox fonts
+        └── Chrome/  # Downloaded Chrome fonts
+        └── Firefox/ # Downloaded Firefox fonts
+        
 ```
 
-## 🚀 Quick Start
+## Getting Started
 
+### Prerequisites
 ### 1. Installation
 
 ```bash
-# Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/KrAsH-CoD3/FontDownloader.git
 cd FontDownloader
 
 # Install dependencies
-pip install -r requirements.txt
-# OR if using uv:
 uv sync
 ```
 
@@ -62,8 +68,6 @@ Create a `.env` file in the project root:
 
 ```env
 GOOGLE_FONTS_API_KEY=your_google_fonts_api_key_here
-# OR
-API_KEY=your_google_fonts_api_key_here
 ```
 
 **Get your Google Fonts API key:**
@@ -77,25 +81,29 @@ API_KEY=your_google_fonts_api_key_here
 
 ```bash
 # Download missing fonts for Chrome
-python main.py
+uv run main.py
 
 # Compare font lists and generate common/uncommon lists
-python font_diff_camoufox.py
+uv run font_diff_camoufox.py
 
 # Extract font names from Camoufox cache
-python getFontNames.py
+uv run getFontNames.py
 ```
 
-## 📋 Detailed Usage
+## Detailed Usage
 
 ### Main Font Downloader (`main.py`)
 
-Downloads fonts from Google Fonts API that are missing from your Camoufox installation.
+Downloads fonts from Google Fonts API that are missing from your Camoufox installation, based on real device font pairs and browsers.
 
 **Configuration:**
-- Change `BROWSER = "Chrome"` to `"Firefox"` for Firefox fonts
-- Fonts are downloaded to `Fonts/Downloaded_fonts/{BROWSER}/`
-- Missing fonts are logged to `AAA_NOT_FOUND_FONTS.txt`
+```python
+BROWSER = "Firefox"  # or "Chrome"
+DEVICE1 = "PocoX3Pro"
+DEVICE2 = "RedmiNote10Pro"
+```
+- Fonts are downloaded to `Fonts/Downloaded_fonts/{DEVICE1}_{DEVICE2}/{BROWSER}/`
+- Missing fonts are logged to `AAA_NOT_FOUND_FONTS.txt` in the download directory
 
 **Features:**
 - ✅ Smart font name normalization
@@ -119,17 +127,24 @@ Downloads fonts from Google Fonts API that are missing from your Camoufox instal
 
 ### Font Comparison Tool (`font_diff_camoufox.py`)
 
-Compares browser/device font lists with your Camoufox master list.
+Compares device pair font lists with your Camoufox master list to identify common and uncommon fonts.
 
 **Configuration:**
 ```python
 BROWSER = "Firefox"  # or "Chrome"
-DEVICE = "PocoX3Pro"  # or "RedmiNote10Pro"
+DEVICE1 = "PocoX3Pro"
+DEVICE2 = "RedmiNote10Pro"
 ```
 
+**Input:**
+- `Fonts/Common/{DEVICE1}_{DEVICE2}/{BROWSER}Fonts.txt` - Font list for the browser/device pair
+
 **Outputs:**
-- `Fonts/Camoufox/Common/{DEVICE}_{BROWSER}.txt` - Fonts present in both lists
-- `Fonts/Camoufox/Uncommon/{DEVICE}_{BROWSER}.txt` - Fonts only in device/browser
+<!-- - `Fonts/Camoufox/Common/{DEVICE}_{BROWSER}.txt` - Fonts present in both lists
+- `Fonts/Camoufox/Uncommon/{DEVICE}_{BROWSER}.txt` - Fonts only in device/browser -->
+- `Fonts/Common/{DEVICE1}_{DEVICE2}/{BROWSER}Fonts.txt` - Common fonts (present in both Camoufox and device pair)
+- `Fonts/Uncommon/{DEVICE1}_{DEVICE2}/{DEVICE1}/{BROWSER}.txt` - Fonts specific to first device
+- `Fonts/Uncommon/{DEVICE1}_{DEVICE2}/{DEVICE2}/{BROWSER}.txt` - Fonts specific to second device
 
 ### Font Name Extractor (`getFontNames.py`)
 
@@ -153,11 +168,19 @@ Configures Camoufox to simulate mobile devices with accurate fingerprinting.
 
 ## 🛠️ Advanced Configuration
 
-### Adding New Browsers/Devices
+### Adding New Device Pairs/Browsers
 
-1. **Add font list:** Create `Fonts/Common/{BROWSER}.txt`
-2. **Update main.py:** Change `BROWSER = "YourBrowser"`
-3. **Update comparison script:** Modify `BROWSER` and `DEVICE` variables
+1. **Add font lists:**
+   - Create `Fonts/Common/{DEVICE1}_{DEVICE2}/{BROWSER}Fonts.txt` for common fonts
+   - Create corresponding files in `Uncommon/{DEVICE1}_{DEVICE2}/` for device-specific fonts
+
+2. **Update configuration:**
+   - In `main.py` and `font_diff_camoufox.py`, update:
+     ```python
+     BROWSER = "YourBrowser"  # e.g., "Chrome" or "Firefox"
+     DEVICE1 = "FirstDevice"  # e.g., "PocoX3Pro"
+     DEVICE2 = "SecondDevice"  # e.g., "RedmiNote10Pro"
+     ```
 
 ### Font List Format
 
@@ -182,18 +205,18 @@ DOWNLOADED_FONTS_DIR = Path("your/custom/path")
 variant = "bold" if "bold" in files else "regular"
 ```
 
-## 🔧 Dependencies
+## Dependencies
 
 See `pyproject.toml` for dependencies.
 
-## 📊 Font Organization
+## Font Organization
 
 ### Font Organization
 
 #### Common Fonts
 Fonts that are common across device variants:
-- `Fonts/Common/PocoX3Pro_RedmiNote10Pro/ChromeFonts.txt` - Common Chrome fonts
-- `Fonts/Common/PocoX3Pro_RedmiNote10Pro/FirefoxFonts.txt` - Common Firefox fonts
+- `Fonts/Common/PocoX3Pro_RedmiNote10Pro/ChromeFonts.txt` - Common Chrome fonts between Poco X3 Pro and Redmi Note 10 Pro
+- `Fonts/Common/PocoX3Pro_RedmiNote10Pro/FirefoxFonts.txt` - Common Firefox fonts between Poco X3 Pro and Redmi Note 10 Pro
 
 #### Uncommon Fonts
 Device-variant specific fonts that are not in the common set:
@@ -207,28 +230,46 @@ Actual font files downloaded from Google Fonts:
 - `Fonts/Downloaded_fonts/PocoX3Pro_RedmiNote10ProChrome/` - Downloaded Chrome fonts
 - `Fonts/Downloaded_fonts/PocoX3Pro_RedmiNote10ProFirefox/` - Downloaded Firefox fonts
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
-### Common Issues
+### Common Issues and Solutions
 
-**"Missing API Key" Error:**
-- Ensure `.env` file exists with valid `GOOGLE_FONTS_API_KEY`
-- Check API key has Google Fonts Developer API enabled
+#### API and Authentication
+**"Missing API Key" Error**
+```
+RuntimeError: Missing GOOGLE_FONTS_API_KEY in .env
+```
+- ✅ **Solution**:
+  1. Verify `.env` file exists in the project root
+  2. Ensure it contains: `GOOGLE_FONTS_API_KEY=your_key_here`
+  3. Check for typos or extra spaces in the key
+  4. Enable "Google Fonts Developer API" in Google Cloud Console
 
-**"Font not found" Warnings:**
-- Some fonts may not be available on Google Fonts
-- Check `AAA_NOT_FOUND_FONTS.txt` for details
-- Verify font names are correctly formatted
+#### Font Issues
+**"Font not found" Warnings**
+- 🔍 **Diagnosis**:
+  - Font might not exist in Google Fonts
+  - Font name might be misspelled
+  - Font might have a different name in Google Fonts
+- 🛠️ **Solutions**:
+  1. Search for the font on [Google Fonts](https://fonts.google.com/)
+  2. Check `AAA_NOT_FOUND_FONTS.txt` for details
+  3. Try alternative font names or variants
 
-**Permission Errors:**
-- Ensure write permissions for `Fonts/` directory
-- Run with administrator privileges if needed
+**Camoufox Cache Not Found**
+- 🔍 **Troubleshooting**:
+  1. Verify Camoufox is installed and has been run at least once
+  2. Update the path in `getFontNames.py`:
+     ```python
+     # Windows default
+     directory_path = r"C:\Users\{USER}\AppData\Local\camoufox\camoufox\Cache\fonts"
+     
+     # Linux/macOS alternative
+     # directory_path = os.path.expanduser("~/.config/camoufox/cache/fonts")
+     ```
+  3. Ensure the path uses raw strings (`r"..."`) or escaped backslashes
 
-**Camoufox Cache Not Found:**
-- Update path in `getFontNames.py` to match your system
-- Ensure Camoufox is installed and has been run at least once
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
