@@ -49,18 +49,20 @@ def save_fonts_to_file(fonts, filepath):
         for font in sorted(fonts):
             f.write(f"{font}\n")
 
-# Load font sets
-camoufox_set = load_fonts_from_file(CAMOUFOX_FONTS)
-browser_fonts = load_fonts_from_file(browser_fonts_file)
 
-# Compute intersections and differences
-common_fonts = camoufox_set & browser_fonts
-uncommon_fonts = browser_fonts - camoufox_set
+if __name__ == "__main__":
+    # Load font sets
+    camoufox_set = load_fonts_from_file(CAMOUFOX_FONTS)
+    browser_fonts = load_fonts_from_file(browser_fonts_file)
 
-# Save results
-save_fonts_to_file(common_fonts, common_output)
-save_fonts_to_file(uncommon_fonts, uncommon_output)
+    # Compute intersections and differences
+    common_fonts = camoufox_set & browser_fonts
+    uncommon_fonts = browser_fonts - camoufox_set
 
-print(f"Comparison of {DEVICE1} {BROWSER} Fonts with Camoufox Fonts:")
-print(f"  - Common fonts: {len(common_fonts)}")
-print(f"  - Uncommon fonts: {len(uncommon_fonts)}")
+    # Save results
+    save_fonts_to_file(common_fonts, common_output)
+    save_fonts_to_file(uncommon_fonts, uncommon_output)
+
+    print(f"Comparison of {DEVICE1} {BROWSER} Fonts with Camoufox Fonts:")
+    print(f"  - Common fonts: {len(common_fonts)}")
+    print(f"  - Uncommon fonts: {len(uncommon_fonts)}")
