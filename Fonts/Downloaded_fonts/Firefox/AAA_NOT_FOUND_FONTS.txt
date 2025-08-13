@@ -1,9 +1,0 @@
-Noto Sans Cjk Sc Regular
-
-Droid Sans Mono
-Noto Sans Syriac Estrangela
-Noto Sans Syriac Western
-Noto Serif Cjk Jp
-Noto Serif Cjk Kr
-Noto Serif Cjk Sc
-Noto Serif Cjk Tc
