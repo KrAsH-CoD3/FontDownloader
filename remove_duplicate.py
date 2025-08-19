@@ -49,12 +49,14 @@ def main():
     parser = argparse.ArgumentParser(description="Clean and deduplicate a font list.")
     parser.add_argument(
         "--input",
-        default="Fonts/Unique/duplicate_fonts.txt",
+        default=Path("Fonts", "Unique", "duplicate_fonts.txt"),
+        type=Path,
         help="Input file containing the list of fonts to process.",
     )
     parser.add_argument(
         "--output",
-        default="Fonts/Unique/unique_fonts.txt",
+        default=Path("Fonts", "Unique", "unique_fonts.txt"),
+        type=Path,
         help="Output file to save the unique font list.",
     )
     args = parser.parse_args()
