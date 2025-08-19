@@ -1,3 +1,4 @@
+import argparse
 import re
 from pathlib import Path
 
@@ -43,8 +44,28 @@ def save_to_txt(font_list: list, filename: str = "Fonts/Unique/unique_fonts.txt"
         print(f"No fonts to save to '{filename}'.")
 
 
+def main():
+    """Cleans and deduplicates a font list from an input file and saves it to an output file."""
+    parser = argparse.ArgumentParser(description="Clean and deduplicate a font list.")
+    parser.add_argument(
+        "--input",
+        default="Fonts/Unique/duplicate_fonts.txt",
+        help="Input file containing the list of fonts to process.",
+    )
+    parser.add_argument(
+        "--output",
+        default="Fonts/Unique/unique_fonts.txt",
+        help="Output file to save the unique font list.",
+    )
+    args = parser.parse_args()
+
+    try:
+        raw_text = get_font_list(args.input)
+        fonts = normalize_repeated_fonts(raw_text)
+        save_to_txt(fonts, args.output)
+    except FileNotFoundError:
+        print(f"Error: Input file not found at '{args.input}'")
+
+
 if __name__ == "__main__":
-    filename = "Fonts/Unique/duplicate_fonts.txt"
-    raw_text = get_font_list(filename)
-    fonts = normalize_repeated_fonts(raw_text)
-    save_to_txt(fonts, "Fonts/Unique/unique_fonts.txt")
+    main()
